@@ -49,7 +49,7 @@ def get_Studio_fromID(id):
     cursor.execute("SELECT name from studios WHERE id =" + id + ";")
     record = cursor.fetchall()
     studio_name=str(record[0][0])
-    print("Studio name: ",studio_name)
+    #print("Studio name: ",studio_name)
     return studio_name
 
 try:
