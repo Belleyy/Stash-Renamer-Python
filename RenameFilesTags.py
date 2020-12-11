@@ -6,9 +6,7 @@ from pathlib import Path
 import time
 import progressbar
 
-
-
-
+# Your sqlite path
 dbpath = Path(r"C:\Users\Winter\.stash\Full.sqlite")
 print("Path:",dbpath)
 
