@@ -91,11 +91,11 @@ try:
                 cursor.execute("SELECT path FROM scenes WHERE title='" + scene_Title.replace("'", "''") + "' AND NOT id='" + scene_ID + "';")
                 duplicateCheck = cursor.fetchall()
                 if (len(duplicateCheck) > 0):
-                    print("Duplicate title detected!", file=open("output.txt", "a"))
-                    print(scene_ID + " - " + scene_Title, file=open("output.txt", "a"))
                     for dupl_row in duplicateCheck:
                         if (os.path.dirname(str(dupl_row[0])) == scene_Directory):
-                            print(dupl_row, file=open("output.txt", "a"))
+                            print("Duplicate title detected!", file=open("output.txt", "a"))
+                            print(scene_ID + " - " + scene_Title, file=open("output.txt", "a"))
+                            print(os.path.dirname(str(dupl_row[0])) + " - " + scene_Directory, file=open("output.txt", "a"))
                             problem=1
                     if (problem == 1):
                         # Skip this file to avoid overwrite files
