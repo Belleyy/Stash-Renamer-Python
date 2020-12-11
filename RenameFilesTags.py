@@ -97,9 +97,10 @@ try:
                 problem=0
                 for dupl_row in duplicateCheck:
                     if (os.path.dirname(str(dupl_row[0])) == scene_Directory):
-                        print("Duplicate title detected!", file=open("output.txt", "a"))
-                        print(scene_ID + " - " + scene_Title, file=open("output.txt", "a"))
-                        print(os.path.dirname(str(dupl_row[0])) + " - " + scene_Directory, file=open("output.txt", "a"))
+                        with open('output.txt', 'a') as f:
+                            f.write('Duplicated title detected!\n')
+                            f.write('{} - {}\n'.format(scene_ID, scene_Title))
+                            f.write('{} - {}\n'.format(os.path.dirname(str(dupl_row[0])), scene_Directory))
                         problem=1
                 if (problem == 1):
                         # Skip this file to avoid overwrite files
