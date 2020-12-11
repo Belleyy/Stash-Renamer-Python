@@ -10,7 +10,6 @@ import progressbar
 dbpath = Path(r"C:\Users\Winter\.stash\Full.sqlite")
 print("Path:",dbpath)
 
-
 def gettingTagsID(name):
     sqlite_select_Tags = "SELECT id from tags WHERE name = '" + name + "';"
     cursor.execute(sqlite_select_Tags)
@@ -46,12 +45,19 @@ def get_Perf_fromScene(id_scene):
         perf_list+=str(perf[0][0]) + " "
     return perf_list
 
+def get_Studio_fromID(id):
+    cursor.execute("SELECT name from studios WHERE id =" + id + ";")
+    record = cursor.fetchall()
+    studio_name=str(record[0][0])
+    print("Studio name: ",studio_name)
+    return studio_name
+
 try:
     sqliteConnection = sqlite3.connect(dbpath)
     cursor = sqliteConnection.cursor()
-    print("Database created and Successfully Connected to SQLite")
+    print("Database successfully connected to SQLite")
 
-    # If you want only rename scene with a tags.
+    # The name of your tags
     id_tags = gettingTagsID('TAGS')
     print("\n")
 
@@ -92,12 +98,17 @@ try:
                             print(dupl_row, file=open("output.txt", "a"))
                             problem=1
                     if (problem == 1):
+                        # Skip this file to avoid overwrite files
                         print("\n")
                         continue
 
 
                 performer_name=get_Perf_fromScene(scene_ID)
                 print("Performer name: ",performer_name)
+
+
+                studio_name=get_Studio_fromID(scene_Studio_id)
+                print("Studio name: ",studio_name)
 
                 # Title + Extension
                 newfilename = str(scene_Title + scene_Extension)
@@ -122,6 +133,8 @@ try:
                     print("\n")
                     continue
                 else:
+                    # THIS PART WILL EDIT YOUR DATABASE, FILES (be careful and know what you do)
+
                     # Windows Rename
                     if (os.path.isfile(scene_fullPath) == True):
                         os.rename(scene_fullPath,newpath)
