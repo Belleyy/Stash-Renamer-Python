@@ -139,7 +139,7 @@ try:
                     if (os.path.isfile(scene_fullPath) == True):
                         os.rename(scene_fullPath,newpath)
                         if (os.path.isfile(newpath) == True):
-                            print("Windows Renamed!")
+                            print("File Renamed!", newpath)
                         else:
                             print("Error, rename doesn't work ?",newpath, file=open("output.txt", "a"))
                     else:
