@@ -112,8 +112,9 @@ try:
             print("Performer name: ",performer_name)
 
 
-            studio_name=get_Studio_fromID(scene_Studio_id)
-            print("Studio name: ",studio_name)
+            if (scene_Studio_id and scene_Studio_id != "None"):
+                studio_name=get_Studio_fromID(scene_Studio_id)
+                print("Studio name: ",studio_name)
 
             # Title + Extension
             newfilename = str(scene_Title + scene_Extension)
