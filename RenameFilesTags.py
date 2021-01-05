@@ -69,10 +69,10 @@ try:
                 continue
 
         performer_name=get_Perf_fromSceneID(scene_ID)
-        print("Performer name: ",performer_name)
 
-        studio_name=get_Studio_fromID(scene_Studio_id)
-        print("Studio name: ",studio_name)
+        studio_name = ""
+        if (scene_Studio_id and scene_Studio_id != "None"):
+            studio_name=get_Studio_fromID(scene_Studio_id)
 
         # Date + Performer + Title + Studio (ex: 2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex])
         newfilename=""
