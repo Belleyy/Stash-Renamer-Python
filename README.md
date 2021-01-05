@@ -19,3 +19,7 @@ I recommend to comment action (`os.rename(scene_fullPath,newpath)` and `sqliteCo
 You can uncomment the break (Line 139), so it will stop after the first file.
 
 You can look into the console to see if this work correctly for you.
+
+## Other things
+
+If you want to only select scene with a certain tag, you can take a look at this [old version](https://github.com/Belleyy/Stash-Renamer-Python/blob/7ac97cd2c81767628b2011778c58feeae1267423/RenameFilesTags.py).
