@@ -136,7 +136,8 @@ try:
             #rclone_Process.communicate()
             #print("\n")
             print("\n")
-        progress.finish()
+        #break
+    progress.finish()
     cursor.close()
 except sqlite3.Error as error:
     print("SQLITE Error: ", error)
