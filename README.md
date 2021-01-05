@@ -7,6 +7,7 @@ By doing this, you will make definitive change to your Database and Files!
 ## Requirement
 - Python (Tested on Python v3.9.1 64bit, Win10)
 - ProgressBar2 Module (https://github.com/WoLpH/python-progressbar)
+- Stash Database (https://github.com/stashapp/stash)
 
 ## Usage
 - I recommend make a copy of your database.
