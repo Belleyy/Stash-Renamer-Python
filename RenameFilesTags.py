@@ -62,7 +62,7 @@ try:
             problem=0
             for dupl_row in duplicateCheck:
                 if (os.path.dirname(str(dupl_row[0])) == scene_Directory):
-                    with open('output.txt', 'a') as f:
+                    with open('output.txt', 'a', encoding='utf-8') as f:
                         f.write('Duplicated title detected!\n')
                         f.write('{} - {}\n'.format(scene_ID, scene_Title))
                         f.write('{} - {}\n'.format(os.path.dirname(str(dupl_row[0])), scene_Directory))
@@ -130,7 +130,7 @@ try:
                         print("[Database] Datebase Updated!")
                         edit=0
                 else:
-                    print("Error ?",newpath, file=open("output.txt", "a"))
+                    print("Error ?",newpath, file=open("output.txt", "a", encoding='utf-8'))
             else:
                 print("File don't exist in Explorer")
             print("\n")
