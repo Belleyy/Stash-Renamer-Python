@@ -56,7 +56,7 @@ try:
         scene_Title = re.sub(scene_Extension + '$', '', scene_Title)
 
         #  Look for duplicate title, if a other scene have same date and title it will skip it.
-        cursor.execute("SELECT path FROM scenes WHERE title='" + scene_Title.replace("'", "''") + "' AND date='" + scene_Date + "' AND NOT id='" + scene_ID + "';")
+        cursor.execute("SELECT path FROM scenes WHERE title=? AND date=? AND NOT id=?;",(scene_Title,scene_ID,scene_ID))
         duplicateCheck = cursor.fetchall()
         if (len(duplicateCheck) > 0):
             problem=0
@@ -119,7 +119,7 @@ try:
                 if (os.path.isfile(newpath) == True):
                     print("File Renamed!", newpath)
                     # Database rename
-                    cursor.execute("UPDATE scenes SET path='" + newpath.replace("'", "''") + "' WHERE id=" + scene_ID + ";")
+                    cursor.execute("UPDATE scenes SET path=? WHERE id=?;",(newpath,scene_ID))
                     edit+=1
                     # I update the database every 10 files, you can change this number.
                     if (edit > 10):
