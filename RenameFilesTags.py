@@ -14,11 +14,14 @@ def get_Perf_fromSceneID(id_scene):
     cursor.execute("SELECT performer_id from performers_scenes WHERE scene_id =" + id_scene + ";")
     record = cursor.fetchall()
     print("Performer in scene: ",len(record))
-    for row in record:
-        cursor.execute("SELECT name from performers WHERE id =" + str(row[0]) + ";")
-        perf = cursor.fetchall()
-        #print("Name: ",perf[0][0])
-        perf_list+=str(perf[0][0]) + " "
+    if len(record) > 3:
+        print("More than 3 performers.")
+    else:
+        for row in record:
+            cursor.execute("SELECT name from performers WHERE id =" + str(row[0]) + ";")
+            perf = cursor.fetchall()
+            #print("Name: ",perf[0][0])
+            perf_list+=str(perf[0][0]) + " "
     return perf_list
 
 def get_Studio_fromID(id):
