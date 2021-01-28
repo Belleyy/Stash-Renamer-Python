@@ -56,7 +56,7 @@ try:
         scene_Title = re.sub(scene_Extension + '$', '', scene_Title)
 
         #  Look for duplicate title, if a other scene have same date and title it will skip it.
-        cursor.execute("SELECT path FROM scenes WHERE title=? AND date=? AND NOT id=?;",(scene_Title,scene_ID,scene_ID))
+        cursor.execute("SELECT path FROM scenes WHERE title=? AND date=? AND NOT id=?;",(scene_Title,scene_Date,scene_ID))
         duplicateCheck = cursor.fetchall()
         if (len(duplicateCheck) > 0):
             problem=0
