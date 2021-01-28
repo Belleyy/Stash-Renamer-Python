@@ -115,26 +115,21 @@ try:
                 os.rename(scene_fullPath,newpath)
                 if (os.path.isfile(newpath) == True):
                     print("File Renamed!", newpath)
+                    # Database rename
+                    cursor.execute("UPDATE scenes SET path='" + newpath.replace("'", "''") + "' WHERE id=" + scene_ID + ";")
+                    edit+=1
+                    # I update the database every 10 files, you can change this number.
+                    if (edit > 10):
+                        sqliteConnection.commit()
+                        print("[Database] Datebase Updated!")
+                        edit=0
                 else:
                     print("Error ?",newpath, file=open("output.txt", "a"))
             else:
                 print("File don't exist in Explorer")
 
-            # Database rename
-            cursor.execute("UPDATE scenes SET path='" + newpath + "' WHERE id=" + scene_ID + ";")
-            edit+=1
-            # I update the database every 10 files, you can change this number.
-            if (edit > 10):
-                sqliteConnection.commit()
-                print("[Database] Datebase Updated!")
-                edit=0
 
-            # Rclone rename
-            #rclone_CURRENT=scene_fullPath.replace('H:','gdcrypt:').replace("\\","/")
-            #rclone_NEW=newpath.replace('H:','gdcrypt:').replace("\\","/")
-            #rclone_Process = subprocess.Popen(['rclone', 'moveto', rclone_CURRENT, rclone_NEW, '-v', '--log-file=C:\\Users\\Winter\\Documents\\RcloneLog.log'],shell=True)
-            #rclone_Process.communicate()
-            #print("\n")
+
             print("\n")
         #break
     progress.finish()
