@@ -82,7 +82,10 @@ try:
         if scene_Date:
             newfilename+=re.sub('\s+$', '', scene_Date)
         if performer_name:
-            newfilename+=" " + re.sub('\s+$', '', performer_name)
+            if scene_Date:
+                newfilename+=" " + re.sub('\s+$', '', performer_name)
+            else:
+                newfilename+=re.sub('\s+$', '', performer_name)
         newfilename+=" - " + re.sub('\s+$', '', scene_Title)
         if studio_name != "":
             newfilename+=" [" + studio_name + "]"
