@@ -127,9 +127,6 @@ try:
                     print("Error ?",newpath, file=open("output.txt", "a"))
             else:
                 print("File don't exist in Explorer")
-
-
-
             print("\n")
         #break
     progress.finish()
