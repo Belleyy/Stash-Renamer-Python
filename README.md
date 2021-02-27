@@ -1,5 +1,5 @@
 # SQLITE Renamer for Stash
-Use your database (Sqlite) to rename file.
+Using metadata from your database (SQLITE) to rename your file.
 
 ## Important
 By doing this, you will make definitive change to your Database and Files!
@@ -11,7 +11,7 @@ By doing this, you will make definitive change to your Database and Files!
 - Windows 10 ? (No idea if this work for all OS)
 
 ## Usage
-- I recommend make a copy of your database.
+- I recommend make a copy of your database. (Use 'Backup' in Settings > Task > Backup)
 - You need to set your Database path (Line 9)
 
 ## First Run
