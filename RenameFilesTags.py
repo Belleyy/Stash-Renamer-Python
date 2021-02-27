@@ -5,13 +5,18 @@ import progressbar
 
 # Your sqlite path
 DB_PATH = r"C:\Users\Winter\.stash\Full.sqlite"
-# Log keep a trace of OldPath & Newpath. Could be useful if you want to revert everything. Filename: logRenamer.txt
+# Log keep a trace of OldPath & Newpath. Could be useful if you want to revert everything. Filename: rename_log.txt
 USING_LOG = 1
 # DRY_RUN = True | Will don't change anything in your database & disk.
 DRY_RUN = False
+
 print("Path:", DB_PATH)
 if DRY_RUN == True:
-    print("DRY_RUN Enable")
+    try:
+        os.remove("rename_dryrun.txt") 
+    except FileNotFoundError:
+        pass
+    print("DRY-RUN Enable")
 
 def gettingTagsID(name):
     cursor.execute("SELECT id from tags WHERE name=?;", [name])
@@ -206,7 +211,7 @@ def edit_db(queryfilename,optionnal_query=None):
                     if (os.path.isfile(newpath) == True):
                         print("File Renamed!")
                         if USING_LOG == 1:
-                            print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("logRenamer.txt", "a", encoding='utf-8'))
+                            print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("rename_log.txt", "a", encoding='utf-8'))
                         # Database rename
                         cursor.execute("UPDATE scenes SET path=? WHERE id=?;", [newpath, scene_ID])
                         edit += 1
@@ -219,6 +224,7 @@ def edit_db(queryfilename,optionnal_query=None):
                         print("File failed to rename ?\n{}".format(newpath), file=open("output.txt", "a", encoding='utf-8'))
                 else:
                     print("[DRY_RUN] File should be renamed")
+                    print("{} -> {}\n".format(scene_fullPath,newpath), file=open("rename_dryrun.txt", "a", encoding='utf-8'))
             else:
                 print("File don't exist in your Disk/Drive")
             print("\n")
