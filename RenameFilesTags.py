@@ -5,8 +5,10 @@ from pathlib import Path
 import progressbar
 
 # Your sqlite path
-dbpath = r"C:\Users\Winter\.stash\Full.sqlite"
-print("Path:", dbpath)
+DB_PATH = r"C:\Users\Winter\.stash\Full.sqlite"
+# Log keep a trace of OldPath & Newpath. Could be useful if you want to revert everything. Filename: logRenamer.txt
+USING_LOG = 1
+print("Path:", DB_PATH)
 
 
 def gettingTagsID(name):
@@ -34,8 +36,7 @@ def get_SceneID_fromTags(id):
 
 def get_Perf_fromSceneID(id_scene):
     perf_list = ""
-    cursor.execute(
-        "SELECT performer_id from performers_scenes WHERE scene_id=?;", [id_scene])
+    cursor.execute("SELECT performer_id from performers_scenes WHERE scene_id=?;", [id_scene])
     record = cursor.fetchall()
     #print("Performer in scene: ", len(record))
     if len(record) > 3:
@@ -43,8 +44,7 @@ def get_Perf_fromSceneID(id_scene):
     else:
         for row in record:
             perf_id = str(row[0])
-            cursor.execute(
-                "SELECT name from performers WHERE id=?;", [perf_id])
+            cursor.execute("SELECT name from performers WHERE id=?;", [perf_id])
             perf = cursor.fetchall()
             perf_list += str(perf[0][0]) + " "
     perf_list = perf_list.strip()
@@ -59,8 +59,11 @@ def get_Studio_fromID(id):
 
 
 def makeFilename(scene_information, query):
-    # Date + Performer + Title + Studio (ex: 2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex])
-    # query = "$date $performer - $title [$studio]"
+    # Query exemple: 
+    # Available: $date $performer $title $studio $height
+    # $title                              == SSNI-000.mp4
+    # $date $title                        == 2017-04-27 Oni Chichi.mp4
+    # $date $performer - $title [$studio] == 2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
     new_filename = str(query)
     if "$date" in new_filename:
         if scene_information.get('date') == "":
@@ -87,12 +90,23 @@ def makeFilename(scene_information, query):
         else:
             new_filename = new_filename.replace("$studio", scene_information.get('studio'))
 
+    if "$height" in new_filename:
+        if scene_information.get('height') == "":
+            new_filename = re.sub('\$height\s*', '', new_filename)
+        else:
+            new_filename = new_filename.replace("$height", scene_information.get('height'))
     return new_filename
 
 
-def edit_db(query, queryfilename):
+def edit_db(queryfilename,optionnal_query=None):
+    query = "SELECT id,path,title,date,studio_id,height from scenes;"
+    if optionnal_query is not None:
+        query = "SELECT id,path,title,date,studio_id,height from scenes {};".format(optionnal_query)
     cursor.execute(query)
     record = cursor.fetchall()
+    if len(record) == 0:
+        print("There is no scene to change with this query")
+        return
     print("Scenes numbers: {}".format(len(record)))
     edit = 0
     progressbar_Index = 0
@@ -107,7 +121,7 @@ def edit_db(query, queryfilename):
         scene_Title = str(row[2])
         scene_Date = str(row[3])
         scene_Studio_id = str(row[4])
-
+        scene_height = str(row[5])
         # By default, title contains extensions.
         scene_Title = re.sub(scene_Extension + '$', '', scene_Title)
 
@@ -133,11 +147,20 @@ def edit_db(query, queryfilename):
         if (scene_Studio_id and scene_Studio_id != "None"):
             studio_name = get_Studio_fromID(scene_Studio_id)
 
+        if scene_height == '4320':
+            scene_height='8k'
+        else:
+            if scene_height == '2160':
+                scene_height='4k'
+            else:
+                scene_height="{}p".format(scene_height)
+
         scene_information = {
             "title": scene_Title,
             "date": scene_Date,
             "performer": performer_name,
-            "studio": studio_name
+            "studio": studio_name,
+            "height": scene_height
         }
 
         newfilename = makeFilename(scene_information, queryfilename) + scene_Extension
@@ -177,7 +200,9 @@ def edit_db(query, queryfilename):
             if (os.path.isfile(scene_fullPath) == True):
                 os.rename(scene_fullPath, newpath)
                 if (os.path.isfile(newpath) == True):
-                    print("File Renamed!", newpath)
+                    print("File Renamed!")
+                    if USING_LOG == 1:
+                        print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("logRenamer.txt", "a", encoding='utf-8'))
                     # Database rename
                     cursor.execute("UPDATE scenes SET path=? WHERE id=?;", [newpath, scene_ID])
                     edit += 1
@@ -198,7 +223,7 @@ def edit_db(query, queryfilename):
 
 
 try:
-    sqliteConnection = sqlite3.connect(dbpath)
+    sqliteConnection = sqlite3.connect(DB_PATH)
     cursor = sqliteConnection.cursor()
     print("Python successfully connected to SQLite\n")
 except sqlite3.Error as error:
@@ -206,34 +231,36 @@ except sqlite3.Error as error:
     input("Press Enter to continue...")
     exit(1)
 
-# Scene with Specific Tags
-id_tags_JAV = gettingTagsID('1. JAV')
-if id_tags_JAV is not None:
-    id_scene_JAV = get_SceneID_fromTags(id_tags_JAV)
-    sqlite_query = "SELECT id,path,title,date,studio_id from scenes WHERE id in ({}) AND path LIKE 'E:\\Film\\R18\\%';".format(
-        id_scene_JAV)
-    # E.g.: $title == SSNI-000.mp4
-    edit_db(sqlite_query, "$title")
+# THIS PART IS PERSONAL THINGS, YOU SHOULD CHANGE THING BELOW :)
 
-id_tags_Anime = gettingTagsID('1. Anime')
-if id_tags_Anime is not None:
-    id_scene_Anime = get_SceneID_fromTags(id_tags_Anime)
-    sqlite_query = "SELECT id,path,title,date,studio_id from scenes WHERE id in ({}) AND path LIKE 'E:\\Film\\R18\\%';".format(
-        id_scene_Anime)
-    # E.g.: $date $title == 2017-04-27 Oni Chichi.mp4
-    edit_db(sqlite_query, "$date $title")
+# Select Scene with Specific Tags
+tags_dict = {
+    '1': {
+        'tag': '1. JAV',
+        'filename': '$title'
+    },
+    '2': {
+        'tag': '1. Anime',
+        'filename': '$date $title'
+    },
+    '3': {
+        'tag': '1. Western',
+        'filename': '$date $performer - $title [$studio]'
+    }
+}
 
-id_tags_Western = gettingTagsID('1. Western')
-if id_tags_Western is not None:
-    id_scene_Western = get_SceneID_fromTags(id_tags_Western)
-    sqlite_query = "SELECT id,path,title,date,studio_id from scenes WHERE id in ({}) AND path LIKE 'E:\\Film\\R18\\%';".format(
-        id_scene_Western)
-    # E.g.: $date $performer - $title [$studio] == 2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
-    edit_db(sqlite_query, "$date $performer - $title [$studio]")
+for _, dict_section in tags_dict.items():
+    tag_name = dict_section.get("tag")
+    filename_template = dict_section.get("filename")
+    id_tags = gettingTagsID(tag_name)
+    if id_tags is not None:
+        id_scene = get_SceneID_fromTags(id_tags)
+        option_sqlite_query = "WHERE id in ({}) AND path LIKE 'E:\\Film\\R18\\%'".format(id_scene)
+        edit_db(filename_template,option_sqlite_query)
+        print("====================")
 
 # Select ALL scenes
-#sqlite_query = "SELECT id,path,title,date,studio_id from scenes;"
-#edit_db(sqlite_query,"$date $performer - $title [$studio]")
+#edit_db("$date $performer - $title [$studio]")
 
 sqliteConnection.commit()
 cursor.close()
