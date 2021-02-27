@@ -7,8 +7,11 @@ import progressbar
 DB_PATH = r"C:\Users\Winter\.stash\Full.sqlite"
 # Log keep a trace of OldPath & Newpath. Could be useful if you want to revert everything. Filename: logRenamer.txt
 USING_LOG = 1
+# DRY_RUN = True | Will don't change anything in your database & disk.
+DRY_RUN = False
 print("Path:", DB_PATH)
-
+if DRY_RUN == True:
+    print("DRY_RUN Enable")
 
 def gettingTagsID(name):
     cursor.execute("SELECT id from tags WHERE name=?;", [name])
@@ -187,37 +190,42 @@ def edit_db(queryfilename,optionnal_query=None):
             #print("Studio ID: ", scene_Studio_id)
             #print("Performer name: ", performer_name)
             #print("Studio name: ", studio_name)
+            #print("Resolution: ", scene_height)
             #print("-------------")
-            print("OldFilename: ", os.path.basename(scene_fullPath))  # Get filename
-            print("NewFilename: ", newfilename)
-            print("NewPath: ", newpath)
+            print("OLD Filename: ", os.path.basename(scene_fullPath))  # Get filename
+            print("NEW Filename: ", newfilename)
+            print("NEW Path: ", newpath)
 
             #
             # THIS PART WILL EDIT YOUR DATABASE, FILES (be careful and know what you do)
             #
             # Windows Rename
             if (os.path.isfile(scene_fullPath) == True):
-                os.rename(scene_fullPath, newpath)
-                if (os.path.isfile(newpath) == True):
-                    print("File Renamed!")
-                    if USING_LOG == 1:
-                        print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("logRenamer.txt", "a", encoding='utf-8'))
-                    # Database rename
-                    cursor.execute("UPDATE scenes SET path=? WHERE id=?;", [newpath, scene_ID])
-                    edit += 1
-                    # I update the database every 10 files, you can change this number.
-                    if (edit > 10):
-                        sqliteConnection.commit()
-                        print("[Database] Datebase Updated!")
-                        edit = 0
+                if DRY_RUN == False:
+                    os.rename(scene_fullPath, newpath)
+                    if (os.path.isfile(newpath) == True):
+                        print("File Renamed!")
+                        if USING_LOG == 1:
+                            print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("logRenamer.txt", "a", encoding='utf-8'))
+                        # Database rename
+                        cursor.execute("UPDATE scenes SET path=? WHERE id=?;", [newpath, scene_ID])
+                        edit += 1
+                        # I update the database every 10 files, you can change this number.
+                        if (edit > 10):
+                            sqliteConnection.commit()
+                            print("[Database] Datebase Updated!")
+                            edit = 0
+                    else:
+                        print("File failed to rename ?\n{}".format(newpath), file=open("output.txt", "a", encoding='utf-8'))
                 else:
-                    print("File failed to rename ?\n{}".format(newpath), file=open("output.txt", "a", encoding='utf-8'))
+                    print("[DRY_RUN] File should be renamed")
             else:
-                print("File don't exist in Explorer")
+                print("File don't exist in your Disk/Drive")
             print("\n")
         # break
     progress.finish()
-    sqliteConnection.commit()
+    if DRY_RUN == False:
+        sqliteConnection.commit()
     return
 
 
@@ -261,7 +269,8 @@ for _, dict_section in tags_dict.items():
 # Select ALL scenes
 #edit_db("$date $performer - $title [$studio]")
 
-sqliteConnection.commit()
+if DRY_RUN == False:
+    sqliteConnection.commit()
 cursor.close()
 sqliteConnection.close()
 print("The SQLite connection is closed")
