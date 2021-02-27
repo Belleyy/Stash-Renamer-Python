@@ -1,7 +1,6 @@
 import os
 import sqlite3
 import re
-from pathlib import Path
 import progressbar
 
 # Your sqlite path
