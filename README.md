@@ -15,8 +15,8 @@ By doing this, you will make definitive change to your Database and Files!
 - You need to set your Database path (Line 7)
 
 ## First Run
-Set USE_DRY to True (Line 11), by doing this nothing will be changed.
-- This will create a file (rename_dryrun.txt) that show how the path/file will be changed.
+Set `USE_DRY` to True (Line 11), by doing this nothing will be changed.
+- This will create a file `rename_dryrun.txt` that show how the path/file will be changed.
 You can uncomment the break (Line 232), so it will stop after the first file.
 
 ## Filename template
@@ -31,9 +31,16 @@ $title $height|SSNI-000 1080p.mp4
 $date $title|2017-04-27 Oni Chichi.mp4
 $date $performer - $title [$studio] |2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
 
+## Function
+| Function        | Description           
+| ------------- |-------------
+`gettingTagsID(tag_name)`|Return the ID of this tag.
+`get_SceneID_fromTags(id)`|Return a list with all scenes ID that have this tags.
+
+
 ## Change scenes by tags
 
-If you want different format by tags. Create a dict with `tag` (The name of the tag in Stash) & `filename` (Filename template)
+If you want differents formats by tags. Create a dict with `tag` (The name of the tag in Stash) & `filename` (Filename template)
 ```py
 tags_dict = {
     '1': {
@@ -57,7 +64,7 @@ for _, dict_section in tags_dict.items():
         print("====================")
 ```
 
-If you want only change 1 tag:
+If you only want change 1 tag:
 ```py
 id_tags = gettingTagsID('1. JAV')
 if id_tags is not None:
@@ -73,8 +80,8 @@ edit_db("$date $performer - $title [$studio]")
 
 ## Optionnal SQLITE
 
-If you only want change a specific path, use the second parameter to `edit_db`, it will add it to the sqlite query. [Documentation ?](https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm)
-Exemple: (Only take file that have the path `E:\\Film\\R18`)
+If you only want change a specific path, use the second parameter to `edit_db`, it will add it to the sqlite query. [(Documentation ?)](https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm)
+Exemple (Only take file that have the path `E:\\Film\\R18`):
 ```py
 option_sqlite_query = "WHERE path LIKE 'E:\\Film\\R18\\%'"
 edit_db("$date $performer - $title [$studio]",option_sqlite_query)
