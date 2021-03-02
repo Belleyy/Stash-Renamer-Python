@@ -32,6 +32,12 @@ $title $height|Her Fantasy Ball 1080p.mp4
 $date $title|2016-12-29 Her Fantasy Ball.mp4
 $date $performer - $title [$studio]|2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
 
+Note: 
+- A regex will remove illegal character for Windows.
+- If you path will be more than 240 characters, the script will try to reduce it. It will only use Date + Title.
+- If your height of the video is 2160/4320, it will be replace by `4k`/`8k` else it will be `height + p` (240p,720p,1080p...)
+- If the scene contains more than 3 performers, $performer will be replace by nothing.
+
 ## Function
 | Function        | Description           
 | ------------- |-------------
