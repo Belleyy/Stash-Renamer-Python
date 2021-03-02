@@ -2,7 +2,9 @@
 Using metadata from your database (SQLITE) to rename your file.
 
 ## :exclamation: Important :exclamation:
-By doing this, you will make definitive change to your Database and Files!
+**By doing this, you will make definitive change to your Database and Files!** 
+###### (You can have a logfile (`USING_LOG`), so you can probably revert everything)
+
 
 ## Requirement
 - Python (Tested on Python v3.9.1 64bit, Win10)
