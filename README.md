@@ -78,7 +78,7 @@ if id_tags is not None:
 edit_db("$date $performer - $title [$studio]")
 ```
 
-## Optionnal SQLITE
+## Optional SQLITE
 
 If you only want change a specific path, use the second parameter to `edit_db`, it will add it to the sqlite query. [(Documentation ?)](https://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm)
 Exemple (Only take file that have the path `E:\\Film\\R18`):
