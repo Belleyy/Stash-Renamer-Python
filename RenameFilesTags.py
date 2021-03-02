@@ -6,7 +6,7 @@ import progressbar
 # Your sqlite path
 DB_PATH = r"C:\Users\Winter\.stash\Full.sqlite"
 # Log keep a trace of OldPath & Newpath. Could be useful if you want to revert everything. Filename: rename_log.txt
-USING_LOG = 1
+USING_LOG = True
 # DRY_RUN = True | Will don't change anything in your database & disk.
 DRY_RUN = False
 
@@ -102,6 +102,7 @@ def makeFilename(scene_information, query):
             new_filename = re.sub('\$height\s*', '', new_filename)
         else:
             new_filename = new_filename.replace("$height", scene_information.get('height'))
+    new_filename = new_filename.strip()
     return new_filename
 
 
@@ -210,7 +211,7 @@ def edit_db(queryfilename,optionnal_query=None):
                     os.rename(scene_fullPath, newpath)
                     if (os.path.isfile(newpath) == True):
                         print("File Renamed!")
-                        if USING_LOG == 1:
+                        if USING_LOG == True:
                             print("{}|{}|{}\n".format(scene_ID,scene_fullPath,newpath), file=open("rename_log.txt", "a", encoding='utf-8'))
                         # Database rename
                         cursor.execute("UPDATE scenes SET path=? WHERE id=?;", [newpath, scene_ID])
@@ -244,7 +245,7 @@ except sqlite3.Error as error:
     input("Press Enter to continue...")
     exit(1)
 
-# THIS PART IS PERSONAL THINGS, YOU SHOULD CHANGE THING BELOW :)
+## THIS PART IS PERSONAL THINGS, YOU SHOULD CHANGE THING BELOW :)
 
 # Select Scene with Specific Tags
 tags_dict = {
@@ -274,6 +275,8 @@ for _, dict_section in tags_dict.items():
 
 # Select ALL scenes
 #edit_db("$date $performer - $title [$studio]")
+
+## END OF PERSONAL THINGS
 
 if DRY_RUN == False:
     sqliteConnection.commit()
