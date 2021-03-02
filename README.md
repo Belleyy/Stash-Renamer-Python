@@ -3,7 +3,7 @@ Using metadata from your database (SQLITE) to rename your file.
 
 ## :exclamation: Important :exclamation:
 **By doing this, you will make definitive change to your Database and Files!** 
-###### (You can have a logfile (`USING_LOG`), so you can probably revert everything)
+###### (You can have a logfile (`USING_LOG`), so you can probably revert everything...)
 
 
 ## Requirement
@@ -20,6 +20,7 @@ Using metadata from your database (SQLITE) to rename your file.
 ## First Run
 Set `USE_DRY` to True (Line 11), by doing this nothing will be changed.
 - This will create a file `rename_dryrun.txt` that show how the path/file will be changed.
+
 You can uncomment the break (Line 232), so it will stop after the first file.
 
 ## Filename template
