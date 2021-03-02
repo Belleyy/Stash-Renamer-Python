@@ -1,7 +1,7 @@
 # SQLITE Renamer for Stash
 Using metadata from your database (SQLITE) to rename your file.
 
-## Important
+## :exclamation: Important :exclamation:
 By doing this, you will make definitive change to your Database and Files!
 
 ## Requirement
@@ -13,6 +13,7 @@ By doing this, you will make definitive change to your Database and Files!
 ## Usage
 - I recommend make a copy of your database. (Use "backup" in Stash Settings)
 - You need to set your Database path (Line 7)
+- Replace things between Line 248 - 279
 
 ## First Run
 Set `USE_DRY` to True (Line 11), by doing this nothing will be changed.
