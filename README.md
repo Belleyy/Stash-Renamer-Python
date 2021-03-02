@@ -26,10 +26,10 @@ The script will replace these field with the data from the database.
 Exemple:
 | Template        | Result           
 | ------------- |:-------------:
-$title|SSNI-000.mp4
-$title $height|SSNI-000 1080p.mp4
-$date $title|2017-04-27 Oni Chichi.mp4
-$date $performer - $title [$studio] |2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
+$title|Her Fantasy Ball.mp4
+$title $height|Her Fantasy Ball 1080p.mp4
+$date $title|2016-12-29 Her Fantasy Ball.mp4
+$date $performer - $title [$studio]|2016-12-29 Eva Lovia - Her Fantasy Ball [Sneaky Sex].mp4
 
 ## Function
 | Function        | Description           
