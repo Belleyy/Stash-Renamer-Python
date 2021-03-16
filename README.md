@@ -14,14 +14,14 @@ Using metadata from your database (SQLITE) to rename your file.
 
 ## Usage
 - I recommend make a copy of your database. (Use "backup" in Stash Settings)
-- You need to set your Database path (Line 7)
-- Replace things between Line 248 - 279
+- You need to set your Database path ([Line 7](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L7))
+- Replace things between [Line 248 - 279](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L248)
 
 ## First Run
-Set `USE_DRY` to True (Line 11), by doing this nothing will be changed.
+Set `USE_DRY` to True ([Line 11](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L11)), by doing this nothing will be changed.
 - This will create a file `rename_dryrun.txt` that show how the path/file will be changed.
 
-You can uncomment the break (Line 232), so it will stop after the first file.
+You can uncomment the break ([Line 232](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L232)), so it will stop after the first file.
 
 ## Filename template
 Available: `$date` `$performer` `$title` `$studio` `$height`
@@ -40,13 +40,6 @@ Note:
 - If you path will be more than 240 characters, the script will try to reduce it. It will only use Date + Title.
 - If your height of the video is 2160/4320, it will be replace by `4k`/`8k` else it will be `height + p` (240p,720p,1080p...)
 - If the scene contains more than 3 performers, $performer will be replace by nothing.
-
-## Function
-| Function        | Description           
-| ------------- |-------------
-`gettingTagsID(tag_name)`|Return the ID of this tag.
-`get_SceneID_fromTags(id)`|Return a list with all scenes ID that have this tags.
-
 
 ## Change scenes by tags
 
