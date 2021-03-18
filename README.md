@@ -13,9 +13,11 @@ Using metadata from your database (SQLITE) to rename your file.
 - Windows 10 ? (No idea if this work for all OS)
 
 ## Usage
+
 - I recommend make a copy of your database. (Use "backup" in Stash Settings)
 - You need to set your Database path ([Line 7](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L7))
 - Replace things between [Line 248 - 279](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L248)
+
 
 ## First Run
 Set `USE_DRY` to True ([Line 11](https://github.com/Belleyy/Stash-Renamer-Python/blob/dev/RenameFilesTags.py#L11)), by doing this nothing will be changed.
@@ -90,3 +92,4 @@ Exemple (Only take file that have the path `E:\\Film\\R18`):
 option_sqlite_query = "WHERE path LIKE 'E:\\Film\\R18\\%'"
 edit_db("$date $performer - $title [$studio]",option_sqlite_query)
 ```
+
