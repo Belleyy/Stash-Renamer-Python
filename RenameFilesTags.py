@@ -9,6 +9,8 @@ DB_PATH = r"C:\Users\Winter\.stash\Full.sqlite"
 USING_LOG = True
 # DRY_RUN = True | Will don't change anything in your database & disk.
 DRY_RUN = False
+# Only take female performer name
+FEMALE_ONLY = False
 
 print("Path:", DB_PATH)
 if DRY_RUN == True:
@@ -46,14 +48,24 @@ def get_Perf_fromSceneID(id_scene):
     cursor.execute("SELECT performer_id from performers_scenes WHERE scene_id=?;", [id_scene])
     record = cursor.fetchall()
     #print("Performer in scene: ", len(record))
-    if len(record) > 3:
-        print("More than 3 performers.")
-    else:
-        for row in record:
-            perf_id = str(row[0])
-            cursor.execute("SELECT name from performers WHERE id=?;", [perf_id])
-            perf = cursor.fetchall()
+    perfcount=0
+    for row in record:
+        perf_id = str(row[0])
+        cursor.execute("SELECT name,gender from performers WHERE id=?;", [perf_id])
+        perf = cursor.fetchall()
+        if FEMALE_ONLY == True:
+            # Only take female gender
+            if str(perf[0][1]) == "FEMALE":
+                perf_list += str(perf[0][0]) + " "
+                perfcount += 1
+            else:
+                continue
+        else:
             perf_list += str(perf[0][0]) + " "
+            perfcount += 1
+    if perfcount > 3:
+        perf_list = ""
+        print("More than 3 performers.")
     perf_list = perf_list.strip()
     return perf_list
 
