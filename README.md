@@ -1,3 +1,6 @@
+# :exclamation: MOVED TO https://github.com/stashapp/CommunityScripts :exclamation:
+
+
 # SQLITE Renamer for Stash
 Using metadata from your database (SQLITE) to rename your file.
 
